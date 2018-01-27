@@ -1,0 +1,5 @@
+com\mycompany\aquaparkrest\resources\ApplicationConfig.class
+com\mycompany\aquaparkrest\resources\AttractionsResource.class
+com\mycompany\aquaparkrest\logic\Attractions.class
+com\mycompany\aquaparkrest\logic\Attraction.class
+com\mycompany\aquaparkrest\resources\AttractionsResource$1.class

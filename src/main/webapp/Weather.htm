@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       <link rel="Stylesheet" href="styles.css" />
+    <title>Pogoda</title>
+</head>
+<body>
+
+   
+    <div id="dokument">
+        
+        <div id="naglowek"> </div>
+        
+        <div id="tloKolor">
+    
+            <div id="menu">
+                    <h2>INFORMACJE</h2>
+                    <ol>
+
+                        <li><a href="index.jsp"><b>Strona startowa</b></a></li>
+                        <li>
+                            <a href="Attractions.htm"><b>Atrakcje</b></a>
+                        </li>
+                        <li>
+                            <a href="Weather.htm"><b>Pogoda</b></a>
+                        </li>
+                        
+                        <li>
+                            <a href="Distance.htm"><b>Droga do Aquaparku</b></a>
+                        </li>
+
+                    </ol>
+            </div>
+            <div id="tresc"><h1><i>Prognoza pogody</i></h1> 
+                <br />
+                <br />
+                
+                <p>
+                    <b>
+                       Suwałki są miastem, które co roku mają największą roczną amplitudę temperatur, 
+                       więc przygotuj się na srogą zimę i bardzo ciepłe lato.
+
+                    </b>
+                </p>
+            
+            </div> 
+            <p  style="text-align: left;">Podaj liczbę dni dla prognozy pogody w Suwałkach (Maximum 16)</p>
+                <input type="text" id="numOfDays"><br>
+                <input type="button" onclick="gettingJSONweather()" value="Pokaż pogodę">
+             <div id="atrakcje"> </div>
+            
+            <script>
+                function ucfirst(str) {
+                    var firstLetter = str.slice(0, 1);
+                    return firstLetter.toUpperCase() + str.substring(1);
+                }
+               
+                function gettingJSONweather(){
+                    var numOfDays = $('#numOfDays').val();
+                    var apiURI = "http://api.openweathermap.org/data/2.5/forecast/daily?id=7530941&cnt=" + numOfDays + "&appid=2508abecb6d9037229e719a6adc445af";
+                    $.ajax({
+                        url: apiURI,
+                        jsonp: "callback",
+                        dataType: "jsonp",
+                        success: function( response ) {
+                          if (response !== null && response.list !== null) {
+                            var tableOfWeathers= "<table style='height:20;'> <tr id='kolorwiersza'><th>Dzień</th>";
+                            tableOfWeathers+="<th>Data </th>";
+                            tableOfWeathers+="<th>Temperatura w dzień </th>";
+                            tableOfWeathers+="<th>Temperatura w nocy</th>";
+                            tableOfWeathers+="<th>Opis pogody</th>";
+                            tableOfWeathers+="<th>Prezentacja</th></tr>";
+                            for (var i = 0; i < numOfDays; i++) {
+                                var day = i + 1;
+                                tableOfWeathers+="<tr><th class='kolorkolumny'>" +  day +"</th>";
+                                tableOfWeathers+="<td>" + new Date(response.list[i].dt * 1000) + "</td>";
+                                tableOfWeathers+="<td>" + Math.round(response.list[i].temp.day - 273.15)  + "</td>";
+                                tableOfWeathers+="<td>" + Math.round(response.list[i].temp.night - 273.15) + "</td>";
+                                tableOfWeathers+="<td>" + ucfirst(response.list[i].weather[0].description) + "</td>";
+                                tableOfWeathers+="<td>" + '<img src="http://openweathermap.org/img/w/' + response.list[i].weather[0].icon + '.png"/>"' + response.list[i].weather[0].main  + "</td></tr>";
+                                
+                            }
+                             tableOfWeathers+="</table>";
+                             document.getElementById("atrakcje").innerHTML = tableOfWeathers;
+                        } else {
+                            console.log('Napotkano problem z odczytaniem pogody');
+                        }
+        
+        
+                        }
+                    });
+                    
+                }
+                
+            </script>
+            <div id="footer">
+                <br />
+                <br />
+
+                 <h3 class="mail"><i><a href="mailto:kazanov18@wp.pl">Jeśli masz jakikolwiek problem, napisz</a></i></h3>
+                 &copy; MK
+            </div>   
+        </div>     
+    </div>
+ 
+
+
+
+</body>
+</html>

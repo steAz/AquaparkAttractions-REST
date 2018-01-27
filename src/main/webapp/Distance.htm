@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+       <script type="text/javascript" src="scripts/googleDistance.js"></script> 
+       <link rel="Stylesheet" href="styles.css" />
+    <title>Atrakcje</title>
+</head>
+<body>
+    <div id="dokument">
+        
+        <div id="naglowek"> </div>
+        
+        <div id="tloKolor">
+    
+            <div id="menu">
+                    <h2>INFORMACJE</h2>
+                    <ol>
+
+                        <li><a href="index.jsp"><b>Strona startowa</b></a></li>
+                        <li>
+                            <a href="Attractions.htm"><b>Atrakcje</b></a>
+                        </li>
+                        <li>
+                            <a href="Weather.htm"><b>Pogoda</b></a>
+                        </li>
+                        
+                        <li>
+                            <a href="Distance.htm"><b>Droga do Aquaparku</b></a>
+                        </li>
+
+                    </ol>
+            </div>
+            <div id="tresc"><h1><i>Dojazd do Aquaparku  </i></h1>   </div> 
+            <p  style="text-align: left;">Masz możliwość dostać się do naszego Aquaparku skąd tylko zechcesz</p>
+            <form class="distanceForm" id="distanceForm"  >
+                Twoje miasto
+                <br />
+                <input type="text" id="yourCity" value="Olsztyn"/><br />
+                <br />
+
+                Środek transportu
+                <br />
+                <input type="radio" name="transport" value="bike" />Rower<br />
+                <input type="radio" name="transport" value="car" />Samochód<br />
+                <input type="radio" name="transport" value="onFoot" />Pieszo<br />
+                <input type="radio" name="transport" value="state" />Transport oferowany przez komunikację państwową<br />
+                <br />
+                
+                W czym mierzymy?
+                <br />
+                <input type="radio" name="units" value="metresAndKilometres" />Metry/Kilometry<br />
+                <input type="radio" name="units" value="miles" />Mile<br />
+                
+                <input type="reset" value="Wyczysc wybrane opcje" />
+                <button type="button" name="getDist" onclick="showDist()"> Pokaż drogę</button> 
+               <br /><br />
+            </form>
+            
+            <div id="atrakcje"> </div>
+                      
+            <div id="footer">
+
+                 <h3 class="mail"><i><a href="mailto:kazanov18@wp.pl">Jeśli masz jakikolwiek problem, napisz</a></i></h3>
+                 &copy; MK
+            </div>
+        </div>        
+    </div>
+</body>
+</html>

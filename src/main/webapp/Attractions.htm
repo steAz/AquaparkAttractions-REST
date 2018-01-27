@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+       <link rel="Stylesheet" href="styles.css" />
+    <title>Atrakcje</title>
+</head>
+<body>
+    <div id="dokument">
+        
+        <div id="naglowek"> </div>
+        
+        <div id="tloKolor">
+    
+            <div id="menu">
+                    <h2>INFORMACJE</h2>
+                    <ol>
+
+                        <li><a href="index.jsp"><b>Strona startowa</b></a></li>
+                        <li>
+                            <a href="Attractions.htm"><b>Atrakcje</b></a>
+                        </li>
+                        <li>
+                            <a href="Weather.htm"><b>Pogoda</b></a>
+                        </li>
+                        
+                        <li>
+                            <a href="Distance.htm"><b>Droga do Aquaparku</b></a>
+                        </li>
+
+                    </ol>
+            </div>
+            <div id="tresc"><h1><i>Atrakcje Aquaparku  </i></h1>   </div> 
+            <p  style="text-align: left;">Wypełnij, aby wyświetlić zgodnie z preferencjami (można też nie używać filtrowania)</p>
+            <form class="atrakcjeForm" id="atrakcjeForm">
+                Poziom trudności:
+                <br />
+                <input type="checkbox"  class="latwy" value="LATWY" /> Łatwy <br />
+                <input type="checkbox" class="sredni" value="SREDNI" /> Średni <br />
+                <input type="checkbox" class="trudny" value="TRUDNY" /> Trudny <br />
+                <br />
+
+                Wiek
+                <br />
+                <input type="checkbox" class="mniejNiz12" value="Mniej niz 12" /> <12<br />
+                <input type="checkbox" class="pomiedzy" value="Pomiedzy 12 a 16" /> 12-16<br />
+                <input type="checkbox" class="wiecejNiz16" value="Wiecej niz 16"  /> 16><br />
+                <br />
+                
+                Sortowanie
+                <br />
+                <input type="radio" name="sortingOrder" value="theEasiest" />Od najłatwiejszego<br />
+                <input type="radio" name="sortingOrder" value="theHardest" /> Od najtrudniejszego<br />
+                
+                
+                <input type="reset" value="Wyczysc wybrane opcje" />
+                <button type="button" name="getVal" onclick="loadAttractions()"> Wyświetl</button>
+               <br /><br />
+            </form>
+            
+            <div id="atrakcje"> </div>
+            
+            <script>
+                function loadAttractions() {
+                    var mniejNiz12 = $('.mniejNiz12:checked').val();                      
+                    var pomiedzy = $('.pomiedzy:checked').val();      
+                    var wiecejNiz16 = $('.wiecejNiz16:checked').val();      
+                    var latwy = $('.latwy:checked').val();                 
+                    var trudny = $('.trudny:checked').val();
+                    var sredni = $('.sredni:checked').val();
+                    var sortingOrder = $('input[name=sortingOrder]:checked', '#atrakcjeForm').val();
+                    if (sortingOrder === undefined) sortingOrder = "noSorting";
+                    var counter = 1;
+                    $.getJSON('resources/attractions/list', {'sorting': sortingOrder}, function (data) {
+                        var tableOfAttractions= "<table style='height:20;'> <tr id='kolorwiersza'><th>Atrakcja</th>";
+                        tableOfAttractions+= "<th>Nazwa</th>";
+                        tableOfAttractions+="<th>Trudność</th>";
+                        tableOfAttractions+="<th>Wiek</th></tr>";
+                        $.each(data, function (i, attraction) {
+                           if (
+                                ((((attraction.age === wiecejNiz16) || (attraction.age === mniejNiz12) || (attraction.age === pomiedzy)) && attraction.difficulty === trudny) || 
+                                (attraction.difficulty === trudny && wiecejNiz16 === undefined && mniejNiz12 === undefined && pomiedzy === undefined)) ||
+
+                                ((((attraction.age === wiecejNiz16) || (attraction.age === mniejNiz12) || (attraction.age === pomiedzy)) && attraction.difficulty === sredni) || 
+                                (attraction.difficulty === sredni && wiecejNiz16 === undefined && mniejNiz12 === undefined && pomiedzy === undefined)) ||
+
+                                ((((attraction.age === wiecejNiz16) || (attraction.age === mniejNiz12) || (attraction.age === pomiedzy)) && attraction.difficulty === latwy) || 
+                                (attraction.difficulty === latwy && wiecejNiz16 === undefined && mniejNiz12 === undefined && pomiedzy === undefined)) ||
+
+                                ((((attraction.difficulty === latwy) || (attraction.difficulty === sredni) || (attraction.difficulty === trudny)) && attraction.age === mniejNiz12) ||
+                                (attraction.age === mniejNiz12 && latwy === undefined && sredni === undefined && trudny === undefined)) ||
+
+                                ((((attraction.difficulty === latwy) || (attraction.difficulty === sredni) || (attraction.difficulty === trudny)) && attraction.age === pomiedzy) ||
+                                (attraction.age === pomiedzy && latwy === undefined && sredni === undefined && trudny === undefined)) ||
+
+                                ((((attraction.difficulty === latwy) || (attraction.difficulty === sredni) || (attraction.difficulty === trudny)) && attraction.age === wiecejNiz16) ||
+                                (attraction.age === wiecejNiz16 && latwy === undefined && sredni === undefined && trudny === undefined)) ||
+
+                                (wiecejNiz16 === undefined && mniejNiz12 === undefined && pomiedzy === undefined && latwy === undefined && sredni === undefined && trudny === undefined)
+                                 )
+                                 {
+                                tableOfAttractions+="<tr><th class='kolorkolumny'>" + counter  +"</th>";
+                                tableOfAttractions+="<td>" + attraction.name + "</td>";
+                                tableOfAttractions+="<td>" + attraction.difficulty + "</td>";
+                                tableOfAttractions+="<td>" + attraction.age + "</td></tr>";
+                                counter++;
+                            }        
+                        });
+                         tableOfAttractions+="</table>";
+
+                         document.getElementById("atrakcje").innerHTML = tableOfAttractions;
+                    });
+                }
+
+
+                $(document).ready(function () {
+                   
+                });
+            </script>
+            <div id="footer">
+
+                 <h3 class="mail"><i><a href="mailto:kazanov18@wp.pl">Jeśli masz jakikolwiek problem, napisz</a></i></h3>
+                 &copy; MK
+            </div>
+        </div>        
+    </div>
+ 
+
+
+
+</body>
+</html>
